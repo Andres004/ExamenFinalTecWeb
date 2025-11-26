@@ -8,6 +8,7 @@ namespace ProyectoFinal.Data
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
         public DbSet<Viaje> Viajes => Set<Viaje>();
+        public DbSet<Conductor> Conductores => Set<Conductor>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -21,6 +22,14 @@ namespace ProyectoFinal.Data
                 entity.Property(v => v.FechaSalida).IsRequired();
                 entity.Property(v => v.Precio).IsRequired().HasColumnType("decimal(18,2)");
                 entity.Property(v => v.Estado).IsRequired().HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<Conductor>(entity =>
+            {
+                entity.HasKey(c => c.Id);
+                entity.Property(c => c.Nombre).IsRequired().HasMaxLength(100);
+                entity.Property(c => c.Licencia).IsRequired().HasMaxLength(50);
+                entity.Property(c => c.Telefono).IsRequired().HasMaxLength(15);
             });
         }
     }
