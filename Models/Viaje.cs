@@ -13,7 +13,7 @@ namespace ProyectoFinal.Models
 
         //TODO: Relacion con Pasajero 1:M
 
-        //public int PasajeroId { get; set; }
+        public int PasajeroId { get; set; }
 
         //public Pasajero Pasajero { get; set; } = default!;
 

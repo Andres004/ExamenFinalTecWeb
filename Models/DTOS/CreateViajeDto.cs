@@ -10,7 +10,9 @@ namespace ProyectoFinal.Models.DTOS
         public string Destino { get; set; }
         [Required]
         public decimal Precio { get; set; }
+        public string Estado { get; set; }
         public DateTime FechaSalida { get; set; }
-       
+        public int PasajeroId { get; set; }
+
     }
 }

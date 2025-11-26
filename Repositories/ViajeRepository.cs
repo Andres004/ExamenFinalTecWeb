@@ -18,6 +18,10 @@ namespace ProyectoFinal.Repositories
         public Task<Viaje?> GetViajeAsync(Guid id) =>  
             _ctx.Viajes.FirstOrDefaultAsync(s => s.Id == id);
 
+        public Task<bool> HasOverlapAsync(int pasajeroId, DateTime end) =>
+            _ctx.Viajes.AnyAsync(t => t.PasajeroId == pasajeroId
+                                  && end > t.FechaSalida);
+
         public Task<int> SaveChangesAsync() => _ctx.SaveChangesAsync();
     }
 }
