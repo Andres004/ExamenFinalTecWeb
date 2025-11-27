@@ -9,6 +9,7 @@ namespace ProyectoFinal.Data
 
         public DbSet<Viaje> Viajes => Set<Viaje>();
         public DbSet<Conductor> Conductores => Set<Conductor>();
+        public DbSet<Pasajero> Pasajeros => Set<Pasajero>();
         public DbSet<Vehiculo> Vehiculos => Set<Vehiculo>();
         public DbSet<Modelo> Modelos => Set<Modelo>();
 
@@ -20,12 +21,19 @@ namespace ProyectoFinal.Data
                 .HasOne(v => v.Conductor)
                 .WithMany(c => c.Viajes)
                 .HasForeignKey(v => v.ConductorId)
+                .HasForeignKey(v => v.PasajeroId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Conductor>()
                 .HasMany(c => c.Vehiculos)
                 .WithOne(v => v.Conductor)
                 .HasForeignKey(v => v.ConductorId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Pasajero>()
+                .HasMany(p => p.Viajes)
+                .WithOne(v => v.Pasajero)
+                .HasForeignKey(v => v.PasajeroId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Vehiculo>()
