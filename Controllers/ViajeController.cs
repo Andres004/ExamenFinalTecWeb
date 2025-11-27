@@ -13,7 +13,7 @@ namespace ProyectoFinal.Controllers
         {
             _service = service;
         }
-
+        /*
         // POST: api/viaje
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateViajeDto dto)
@@ -31,7 +31,7 @@ namespace ProyectoFinal.Controllers
             if (data == null) return NotFound();
             return Ok(data);
         }
-        
+        */
 
 
     }

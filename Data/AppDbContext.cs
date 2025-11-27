@@ -8,6 +8,7 @@ namespace ProyectoFinal.Data
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
         public DbSet<Viaje> Viajes => Set<Viaje>();
+        public DbSet<Conductor> Conductores => Set<Conductor>();
 
         public DbSet<Vehiculo> Vehiculos => Set<Vehiculo>();
         public DbSet<Driver> Drivers => Set<Driver>();
@@ -27,26 +28,12 @@ namespace ProyectoFinal.Data
                 entity.Property(v => v.Estado).IsRequired().HasMaxLength(50);
             });
 
-            modelBuilder.Entity<Vehiculo>(entity =>
+            modelBuilder.Entity<Conductor>(entity =>
             {
-                entity.HasKey(v => v.Id);
-                entity.Property(v => v.Marca).IsRequired().HasMaxLength(80);
-                entity.Property(v => v.Modelo).IsRequired().HasMaxLength(80);
-                entity.Property(v => v.Placa).IsRequired().HasMaxLength(15);
-                entity.Property(v => v.Estado).IsRequired().HasMaxLength(20);
-            });
-
-            modelBuilder.Entity<DriverVehiculo>(entity =>
-            {
-                entity.HasKey(dv => dv.Id);
-
-                entity.HasOne(dv => dv.Driver)
-                      .WithMany(d => d.DriverVehiculos)
-                      .HasForeignKey(dv => dv.DriverId);
-
-                entity.HasOne(dv => dv.Vehiculo)
-                      .WithMany(v => v.DriverVehiculos)
-                      .HasForeignKey(dv => dv.VehiculoId);
+                entity.HasKey(c => c.Id);
+                entity.Property(c => c.Nombre).IsRequired().HasMaxLength(100);
+                entity.Property(c => c.Licencia).IsRequired().HasMaxLength(50);
+                entity.Property(c => c.Telefono).IsRequired().HasMaxLength(15);
             });
         }
     }

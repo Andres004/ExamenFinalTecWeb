@@ -17,6 +17,9 @@ namespace ProyectoFinal.Models
 
         //public Pasajero Pasajero { get; set; } = default!;
 
+        public int ConductorId { get; set; }
+        public Conductor Conductor { get; set; } = default!;
+
 
     }
 }
