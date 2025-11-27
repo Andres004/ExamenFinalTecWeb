@@ -1,10 +1,22 @@
-﻿namespace ProyectoFinal.Models.DTOS
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ProyectoFinal.Models.DTOS
 {
-    public class CreateVehicleDto
+    public class CreateVehiculoDto
     {
-        public string Marca { get; set; } = default!;
-        public string Modelo { get; set; } = default!;
-        public string Placa { get; set; } = default!;
-        public int Anio { get; set; }
+        [Required]
+        public string Placa { get; set; } = null!;
+
+        [Required]
+        public string Color { get; set; } = null!;
+
+        [Required]
+        public string Estado { get; set; } = "Activo";
+
+        [Required]
+        public int ModeloId { get; set; }
+
+        [Required]
+        public int ConductorId { get; set; }
     }
 }

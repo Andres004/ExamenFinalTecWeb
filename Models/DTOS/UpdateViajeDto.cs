@@ -1,11 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace ProyectoFinal.Models.DTOS
+﻿namespace ProyectoFinal.Models.DTOS
 {
-    public class UpdateViajeDto
+    public class UpdateVehiculoDto
     {
-        public string Origen { get; set; }
-        public string Destino { get; set; }
-        public decimal Precio { get; set; }
+        public string? Color { get; set; }
+        public string? Estado { get; set; }
     }
 }

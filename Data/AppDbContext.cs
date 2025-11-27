@@ -13,6 +13,7 @@ namespace ProyectoFinal.Data
         public DbSet<Vehiculo> Vehiculos => Set<Vehiculo>();
         public DbSet<Driver> Drivers => Set<Driver>();
         public DbSet<DriverVehiculo> DriverVehiculos => Set<DriverVehiculo>();
+        public DbSet<Modelo> Modelos => Set<Modelo>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -28,6 +29,23 @@ namespace ProyectoFinal.Data
                 entity.Property(v => v.Estado).IsRequired().HasMaxLength(50);
             });
 
+            modelBuilder.Entity<Modelo>(entity =>
+            {
+                entity.HasKey(m => m.Id);
+                entity.Property(m => m.Marca).IsRequired().HasMaxLength(100);
+                entity.Property(m => m.Nombre).IsRequired().HasMaxLength(100);
+                entity.Property(m => m.Año).IsRequired();
+            });
+
+            modelBuilder.Entity<Vehiculo>(entity =>
+            {
+                entity.HasKey(v => v.Id);
+                entity.Property(v => v.Placa).IsRequired().HasMaxLength(20);
+                entity.Property(v => v.Color).IsRequired().HasMaxLength(30);
+                entity.Property(v => v.Estado).IsRequired().HasMaxLength(30);
+            });
+
+
             modelBuilder.Entity<Conductor>(entity =>
             {
                 entity.HasKey(c => c.Id);
@@ -35,6 +53,11 @@ namespace ProyectoFinal.Data
                 entity.Property(c => c.Licencia).IsRequired().HasMaxLength(50);
                 entity.Property(c => c.Telefono).IsRequired().HasMaxLength(15);
             });
+
+            modelBuilder.Entity<Modelo>()
+                .HasOne(m => m.Vehiculo)
+                .WithOne(v => v.Modelo)
+                .HasForeignKey<Vehiculo>(v => v.ModeloId);
         }
     }
 }
