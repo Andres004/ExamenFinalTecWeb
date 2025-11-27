@@ -1,31 +1,26 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace ProyectoFinal.Models
 {
     public class Vehiculo
     {
-        public Guid Id { get; set; }
-       
-        [Required]
-        [MaxLength(15)]
-        public string Placa { get; set; } = default!;
-       [Required, MaxLength(30)]
-        public string Color { get; set; } = default!;
-       [Required]
-        [MaxLength(20)]
-        public string Estado { get; set; } = "Activo"; // Activo / Inactivo
+        public Guid Id { get; set; }  
 
         [Required]
+        public string Placa { get; set; } = null!;
+
+        [Required]
+        public string Color { get; set; } = null!;
+
+        [Required]
+        public string Estado { get; set; } = null!;  
+
+        // 1:1 con Modelo
         public Guid ModeloId { get; set; }
-        public Modelo Modelo { get; set; } = default!;
+        public Modelo Modelo { get; set; } = null!;
 
-        // Relación N:M Vehiculo -> Conductor
+        // 1:N con Conductor
         public Guid ConductorId { get; set; }
-        public Conductor Conductor { get; set; } = default!;
-
-        
-
+        public Conductor Conductor { get; set; } = null!;
     }
 }

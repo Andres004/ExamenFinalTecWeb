@@ -1,14 +1,20 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace ProyectoFinal.Models
 {
     public class Modelo
     {
-        public Guid Id { get; set; }
-        public string Marca { get; set; } = string.Empty;
-        public string Model { get; set; } = string.Empty;
-        public int Anio { get; set; }
+        public Guid Id { get; set; }   
 
-        //relacion 1:1 Modelo -> Vehiculo
-        public Vehiculo Vehiculo { get; set; } = default!;
+        [Required]
+        public string Marca { get; set; } = null!;
 
+        [Required]
+        public string Nombre { get; set; } = null!;
+
+        public int Año { get; set; }
+
+        // Relación 1:1 con Vehiculo
+        public Vehiculo? Vehiculo { get; set; }
     }
 }
