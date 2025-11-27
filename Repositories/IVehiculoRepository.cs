@@ -5,8 +5,8 @@ namespace ProyectoFinal.Repositories
     public interface IVehiculoRepository
     {
         Task AddAsync(Vehiculo vehiculo);
-        Task<Vehiculo?> GetVehiculoAsync(Guid id);
-        Task<bool> ExistsPlacaAsync(string placa);
+        Task<Vehiculo?> GetByIdAsync(int id);
+        Task<bool> PlacaExistsAsync(string placa);
         Task<int> SaveChangesAsync();
     }
 }

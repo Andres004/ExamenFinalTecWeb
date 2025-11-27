@@ -1,4 +1,4 @@
-﻿using ProyectoFinal.Models;
+using ProyectoFinal.Models;
 using ProyectoFinal.Models.DTOS;
 using ProyectoFinal.Repositories;
 
@@ -13,9 +13,10 @@ namespace ProyectoFinal.Services
             _vehiculos = vehiculos;
         }
 
-        public async Task<Guid> CreateAsync(CreateVehicleDto dto)
+        public async Task<int> CreateAsync(CreateVehiculoDto dto)
         {
-            var exists = await _vehiculos.ExistsPlacaAsync(dto.Placa);
+            // ejemplo simple: evitar placas repetidas
+            var exists = await _vehiculos.PlacaExistsAsync(dto.Placa);
             if (exists)
                 throw new InvalidOperationException("Ya existe un vehículo con esa placa.");
 
@@ -28,20 +29,10 @@ namespace ProyectoFinal.Services
 
             await _vehiculos.AddAsync(vehiculo);
             await _vehiculos.SaveChangesAsync();
-
             return vehiculo.Id;
         }
 
-        public Task<Vehiculo?> GetByIdAsync(Guid id)
-            => _vehiculos.GetVehiculoAsync(id);
-
-        public async Task<IEnumerable<Vehiculo>> GetAllAsync()
-        {
-
-            throw new NotImplementedException();
-        }
-
-        public async Task<bool> UpdateAsync(Guid id, UpdateVehicleDto dto)
+        public async Task<object?> GetByIdAsync(int id)
         {
             var vehiculo = await _vehiculos.GetVehiculoAsync(id);
             if (vehiculo == null) return false;
@@ -51,19 +42,21 @@ namespace ProyectoFinal.Services
                 vehiculo.Estado = dto.Estado;
 
 
-            await _vehiculos.SaveChangesAsync();
-            return true;
-        }
-
-        public async Task<bool> DeleteAsync(Guid id)
-        {
-            var vehiculo = await _vehiculos.GetVehiculoAsync(id);
-            if (vehiculo == null) return false;
-
-
-            vehiculo.Estado = "Inactivo";
-            await _vehiculos.SaveChangesAsync();
-            return true;
+            // puedes armar un DTO para la respuesta
+            return new
+            {
+                v.Id,
+                v.Placa,
+                v.Color,
+                v.Estado,
+                Modelo = new
+                {
+                    v.Modelo.Id,
+                    v.Modelo.Marca,
+                    v.Modelo.Nombre,
+                    v.Modelo.Año
+                }
+            };
         }
     }
 }

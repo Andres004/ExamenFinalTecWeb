@@ -1,10 +1,12 @@
-﻿namespace ProyectoFinal.Models.DTOS
+﻿using System;
+
+namespace ProyectoFinal.Models.DTOS
 {
     public class UpdateVehicleDto
     {
-        public string? Marca { get; set; }
-        public string? Modelo { get; set; }
+        public string? Color { get; set; }
         public string? Estado { get; set; }
-        public int? Anio { get; set; }
+        public Guid? ModeloId { get; set; }
+        public Guid? ConductorId { get; set; }
     }
 }

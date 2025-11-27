@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ProyectoFinal.Models;
 
 namespace ProyectoFinal.Data
@@ -10,7 +10,7 @@ namespace ProyectoFinal.Data
         public DbSet<Viaje> Viajes => Set<Viaje>();
         public DbSet<Conductor> Conductores => Set<Conductor>();
         public DbSet<Vehiculo> Vehiculos => Set<Vehiculo>();
-        //public DbSet<Modelo> Modelos => Set<Modelo>();
+        public DbSet<Modelo> Modelos => Set<Modelo>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -34,16 +34,10 @@ namespace ProyectoFinal.Data
                 .HasForeignKey<Vehiculo>(v => v.Id)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            /*
-            modelBuilder.Entity<Modelo>(entity =>
-                entity.Property(m => m.Id).IsRequired(),
-                entity.Property(m => m.Marca).HasMaxLength(50).IsRequired(),
-                entity.Property(m => m.Model).HasMaxLength(50).IsRequired(),
-                entity.Property(m => m.Anio).IsRequired()
-
-
-            );
-            */
+            modelBuilder.Entity<Modelo>()
+                .HasOne(m => m.Vehiculo)
+                .WithOne(v => v.Modelo)
+                .HasForeignKey<Vehiculo>(v => v.ModeloId);
         }
     }
 }

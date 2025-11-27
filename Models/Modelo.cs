@@ -1,4 +1,4 @@
-﻿namespace ProyectoFinal.Models
+namespace ProyectoFinal.Models
 {
     public class Modelo
     {

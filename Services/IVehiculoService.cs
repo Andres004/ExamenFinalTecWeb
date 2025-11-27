@@ -1,14 +1,10 @@
-﻿using ProyectoFinal.Models.DTOS;
-using ProyectoFinal.Models;
+﻿using using ProyectoFinal.Models.DTOS;
 
 namespace ProyectoFinal.Services
 {
     public interface IVehiculoService
     {
-        Task<Guid> CreateAsync(CreateVehicleDto dto);
-        Task<Vehiculo?> GetByIdAsync(Guid id);
-        Task<IEnumerable<Vehiculo>> GetAllAsync();
-        Task<bool> UpdateAsync(Guid id, UpdateVehicleDto dto);
-        Task<bool> DeleteAsync(Guid id);
+        Task<int> CreateAsync(CreateVehiculoDto dto);
+        Task<object?> GetByIdAsync(int id);
     }
 }
