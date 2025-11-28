@@ -20,7 +20,7 @@ Vehicle creation and management
 
 Vehicle ↔ Model (1:1 relationship)
 
-Driver ↔ Vehicle (1:N relationship)
+Driver ↔ Vehicle (N:M relationship)
 
 Passenger → Trip (1:N relationship)
 
