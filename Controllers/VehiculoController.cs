@@ -15,6 +15,7 @@ namespace ProyectoFinal.Controllers
             _service = service;
         }
 
+        // POST: api/vehiculo
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateVehiculoDto dto)
         {
@@ -22,7 +23,7 @@ namespace ProyectoFinal.Controllers
             return CreatedAtAction(nameof(GetById), new { id }, new { id });
         }
 
-
+        // GET: api/vehiculo/{id}
         [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetById([FromRoute] Guid id)
         {
@@ -31,6 +32,7 @@ namespace ProyectoFinal.Controllers
             return Ok(data);
         }
 
+        // PUT: api/vehiculo/{id}
         [HttpPut("{id:guid}")]
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateVehicleDto dto)
         {
@@ -39,7 +41,7 @@ namespace ProyectoFinal.Controllers
             return CreatedAtAction(nameof(GetById), new { id = vehiculo.Id }, vehiculo);
         }
 
-
+        // DELETE: api/vehiculo/{id}
         [HttpDelete("{id:guid}")]
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         {

@@ -9,11 +9,16 @@ namespace ProyectoFinal.Controllers
     public class ViajeController : ControllerBase
     {
         private readonly IViajeService _service;
-        public ViajeController(IViajeService service)
+        private readonly IPasajeroService _pasajero;
+        private readonly IConductorService _conductor;
+
+        public ViajeController(IViajeService service, IPasajeroService pasajero, IConductorService conductor)
         {
             _service = service;
+            _pasajero = pasajero;
+            _conductor = conductor;
         }
-        /*
+        
         // POST: api/viaje
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateViajeDto dto)
@@ -23,15 +28,24 @@ namespace ProyectoFinal.Controllers
         }
 
         
-        // GET: api/viaje/{id}/lineup
-        [HttpGet("{id:int}/pasajero")]
-        public async Task<IActionResult> GetPasajero([FromRoute] int id)
+        // GET: api/viaje/{id}/pasajero
+        [HttpGet("{id:Guid}/pasajero")]
+        public async Task<IActionResult> GetPasajero([FromRoute] Guid id)
         {
-            var data = await _service.CreateAsync(id); // Note: This seems to be a placeholder. Replace with actual method to get pasajero.
+            var data = await _pasajero.GetOne(id);
             if (data == null) return NotFound();
             return Ok(data);
         }
-        */
+
+        // GET: api/viaje/{id}/conductor
+        [HttpGet("{id:Guid}/conductor")]
+        public async Task<IActionResult> GetConductor([FromRoute] Guid id)
+        {
+            var data = await _conductor.GetOne(id);
+            if (data == null) return NotFound();
+            return Ok(data);
+        }
+
 
 
     }

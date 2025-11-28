@@ -17,6 +17,7 @@ namespace ProyectoFinal.Models
         [MaxLength(20)]
         public string Estado { get; set; } = "Activo"; // Activo / Inactivo
 
+        // Relacion 1:1 Vehiculo -> Modelo
         [Required]
         public Guid ModeloId { get; set; }
         public Modelo Modelo { get; set; } = default!;

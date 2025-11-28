@@ -16,7 +16,5 @@ namespace ProyectoFinal.Models.DTOS
         [Required]
         public Guid ModeloId { get; set; }
 
-        [Required]
-        public Guid ConductorId { get; set; }
     }
 }
