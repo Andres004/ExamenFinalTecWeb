@@ -21,7 +21,7 @@ namespace ProyectoFinal.Services
                 throw new InvalidOperationException("Ya existe un vehículo con esa placa.");
 
            
-            var entity = new Vehiculo { Placa = dto.Placa, Color = dto.Color, Estado = dto.Estado, ModeloId = dto.ModeloId, ConductorId = dto.ConductorId };
+            var entity = new Vehiculo { Placa = dto.Placa, Color = dto.Color, Estado = dto.Estado, ModeloId = dto.ModeloId };
             await _vehiculos.AddAsync(entity);
             await _vehiculos.SaveChangesAsync();
             return entity.Id;
