@@ -1,20 +1,27 @@
 using Microsoft.EntityFrameworkCore;
 using ProyectoFinal.Data;
+using ProyectoFinal.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 1. Add Services to the container
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// 2. Configure Database (PostgreSQL)
+
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+
+builder.Services.AddScoped<IPassengerRepository, PassengerRepository>();
+builder.Services.AddScoped<IDriverRepository, DriverRepository>();
+builder.Services.AddScoped<IVehicleRepository, VehicleRepository>();
+builder.Services.AddScoped<ITripRepository, TripRepository>();
+
 var app = builder.Build();
 
-// 3. Configure the HTTP request pipeline
+/
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
