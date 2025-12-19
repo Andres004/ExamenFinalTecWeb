@@ -1,7 +1,6 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Npgsql;
 using ProyectoFinal.Data;
@@ -10,6 +9,11 @@ using ProyectoFinal.Services;
 using OpenApi = Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// --- 1. CONFIGURACIÓN DE PUERTO PARA RAILWAY ---
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+// ----------------------------------------------
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -25,7 +29,7 @@ builder.Services.AddSwaggerGen(c =>
 
     c.AddSecurityDefinition("Bearer", new OpenApi.OpenApiSecurityScheme
     {
-        Description = "JWT Authorization header using the Bearer scheme. Enter 'Bearer' [space] and then your token.",
+        Description = "JWT Authorization header using the Bearer scheme.",
         Name = "Authorization",
         In = OpenApi.ParameterLocation.Header,
         Type = OpenApi.SecuritySchemeType.ApiKey,
@@ -51,12 +55,28 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+// --- 2. LÓGICA DE CONEXIÓN A BASE DE DATOS (RAILWAY + LOCAL) ---
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
 
-if (string.IsNullOrEmpty(connectionString))
+// Si existe la variable de Railway, la usamos y la convertimos
+if (!string.IsNullOrEmpty(databaseUrl))
 {
-    connectionString = "Host=localhost;Port=5432;Database=transportedb;Username=transporteuser;Password=supersecretpass";
+    var uri = new Uri(databaseUrl);
+    var userInfo = uri.UserInfo.Split(':');
+    var builderDb = new NpgsqlConnectionStringBuilder
+    {
+        Host = uri.Host,
+        Port = uri.Port,
+        Username = userInfo[0],
+        Password = userInfo[1],
+        Database = uri.LocalPath.TrimStart('/'),
+        SslMode = SslMode.Require,
+        TrustServerCertificate = true
+    };
+    connectionString = builderDb.ToString();
 }
+// ---------------------------------------------------------------
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(connectionString));
@@ -72,7 +92,8 @@ builder.Services.AddScoped<IDriverService, DriverService>();
 builder.Services.AddScoped<IVehicleService, VehicleService>();
 builder.Services.AddScoped<ITripService, TripService>();
 
-var key = builder.Configuration["Jwt:Key"] ?? "super_secret_key_12345_must_be_long_enough";
+// Obtenemos la clave del appsettings O de las variables de entorno (prioridad entorno)
+var key = Environment.GetEnvironmentVariable("JWT_KEY") ?? builder.Configuration["Jwt:Key"];
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -82,7 +103,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key)),
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key!)),
             ValidateIssuer = false,
             ValidateAudience = false
         };
@@ -90,9 +111,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 var app = builder.Build();
 
+// Swagger siempre visible (incluso en Producción)
 app.UseSwagger();
 app.UseSwaggerUI();
-//swagger
+
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
